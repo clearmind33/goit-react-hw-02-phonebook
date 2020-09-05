@@ -1,0 +1,24 @@
+.contactForm {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid purple;
+  border-radius: 1rem;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
+input {
+  margin: 0.5rem 0 1rem;
+}
+.submit {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #4e4e4e;
+  font-weight: 500;
+  border-radius: 1rem;
+  background-color: white;
+  outline: none;
+}
