@@ -3,18 +3,32 @@ import React, { useState } from 'react';
 import { Notification } from './Notification/Notification';
 import { ContactList } from './ContactList/ContactList';
 import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
 import { Section } from './Section/Section';
+
+import { getVisibleContacts } from '../helpers/helpers';
 
 import './App.css';
 
 function App() {
   const [contacts, setContacts] = useState([]);
 
-  const handleSubmit = contact =>
-    setContacts(contacts => [contact, ...contacts]);
+  const handleSubmit = contact => {
+    const newContactName = contact.name;
+    const sameName = contacts.find(({ name }) => name === newContactName);
+    sameName
+      ? alert(`${newContactName} is already in contacts`)
+      : setContacts(contacts => [contact, ...contacts]);
+  };
 
   const handleDeleteContact = deleteId =>
     setContacts(contacts.filter(({ id }) => id !== deleteId));
+
+  const [filter, setFilter] = useState('');
+
+  const handleChangeFilter = value => setFilter(value);
+
+  const visibleContacts = getVisibleContacts(contacts, filter);
 
   return (
     <div className="App">
@@ -22,9 +36,10 @@ function App() {
         <ContactForm onSubmit={handleSubmit} />
       </Section>
       <Section title="Contacts">
+        <Filter filter={filter} onChangeFilter={handleChangeFilter} />
         {contacts.length ? (
           <ContactList
-            contacts={contacts}
+            contacts={visibleContacts}
             onDeleteContact={handleDeleteContact}
           />
         ) : (

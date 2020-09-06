@@ -13,7 +13,7 @@ export const ContactList = ({ contacts = [], onDeleteContact }) => (
           </p>
         </div>
         <button type="button" onClick={() => onDeleteContact(id)}>
-          Delete Contact
+          Delete
         </button>
       </li>
     ))}
