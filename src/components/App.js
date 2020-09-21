@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Notification } from './Notification/Notification';
 import { ContactList } from './ContactList/ContactList';
@@ -11,6 +11,12 @@ import { getVisibleContacts } from '../helpers/helpers';
 import './App.css';
 
 function App() {
+  // imitation componentDidMount - condition from home task
+  useEffect(() => {
+    const phoneBookContacts = JSON.parse(localStorage.getItem('contacts'));
+    phoneBookContacts && setContacts(phoneBookContacts);
+  }, []);
+
   const [contacts, setContacts] = useState([]);
 
   const handleSubmit = contact => {
@@ -18,11 +24,21 @@ function App() {
     const sameName = contacts.find(({ name }) => name === newContactName);
     sameName
       ? alert(`${newContactName} is already in contacts`)
-      : setContacts(contacts => [contact, ...contacts]);
+      : setContacts(contacts => {
+          localStorage.setItem(
+            'contacts',
+            JSON.stringify([contact, ...contacts]),
+          );
+          return [contact, ...contacts];
+        });
   };
 
   const handleDeleteContact = deleteId =>
-    setContacts(contacts.filter(({ id }) => id !== deleteId));
+    setContacts(contacts => {
+      const filter = contacts.filter(({ id }) => id !== deleteId);
+      localStorage.setItem('contacts', JSON.stringify(filter));
+      return filter;
+    });
 
   const [filter, setFilter] = useState('');
 
